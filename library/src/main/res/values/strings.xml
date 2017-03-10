@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="previous">Go to previous</string>
+    <string name="next">Go to next</string>
+    <string name="previous_year">Go to previous year</string>
+    <string name="next_year">Go to next year</string>
+    <string name="calendar">Calendar</string>
+</resources>
