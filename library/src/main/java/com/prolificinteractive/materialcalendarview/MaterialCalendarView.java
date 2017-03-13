@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -33,12 +34,15 @@ import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormat
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 
+import java.io.File;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -195,9 +199,15 @@ public class MaterialCalendarView extends ViewGroup {
                 pager.setCurrentItem(pager.getCurrentItem() + 1, true);
             } else if (v == buttonPast) {
                 pager.setCurrentItem(pager.getCurrentItem() - 1, true);
-            }  else if (v == buttonYearFuture) {
+            } else if (v == buttonYearFuture) {
+//                for (int i = 1; i <= 12; i++) {
+//                    pager.setCurrentItem(pager.getCurrentItem() + 1, true);
+//                }
                 pager.setCurrentItem(pager.getCurrentItem() + 12, true);
             } else if (v == buttonYearPast) {
+//                for (int i = 1; i <= 12; i++) {
+//                    pager.setCurrentItem(pager.getCurrentItem() - 1, true);
+//                }
                 pager.setCurrentItem(pager.getCurrentItem() - 12, true);
             }
         }
@@ -1520,27 +1530,31 @@ public class MaterialCalendarView extends ViewGroup {
             break;
             case SELECTION_MODE_RANGE: {
                 adapter.setDateSelected(date, nowSelected);
-                if (adapter.getSelectedDates().size() > 2) {
-                    adapter.clearSelections();
-                    adapter.setDateSelected(date, nowSelected);  //  re-set because adapter has been cleared
-                    dispatchOnDateSelected(date, nowSelected);
 
-//                    final List<CalendarDay> dates1 = adapter.getSelectedDates();
+                if (adapter.getSelectedDates().size() > 2) {
 //                    adapter.clearSelections();
-//                    adapter.setDateSelected(dates1.get(dates1.size() - 2), nowSelected);
-//                    adapter.setDateSelected(dates1.get(dates1.size() - 1), nowSelected);
-//                    adapter.setDateSelected(date, nowSelected);
-//
-//                    final List<CalendarDay> dates = adapter.getSelectedDates();
-//                    if (dates.get(0).isAfter(dates.get(1)) &&
-//                            dates.get(0).isAfter(dates.get(2))) {
-//                        dispatchOnRangeSelected(dates.get(2), dates.get(0));
-//                    } else if (dates.get(0).isBefore(dates.get(1)) &&
-//                            dates.get(0).isAfter(dates.get(2))) {
-//                        dispatchOnRangeSelected(dates.get(0), dates.get(2));
-//                    } else {
-//                        dispatchOnRangeSelected(dates.get(0), dates.get(1));
-//                    }
+//                    adapter.setDateSelected(date, nowSelected);  //  re-set because adapter has been cleared
+//                    dispatchOnDateSelected(date, nowSelected);
+
+                    List<CalendarDay> dates = adapter.getSelectedDates();
+//                    Collections.sort(dates, new DayComparator());   //通过重写Comparator的实现类DayComparator来实现日期先后排序。
+                    for (CalendarDay calendarDay : dates) {
+                        Log.i("calendarDay-->", calendarDay.toString());
+                    }
+
+                    int last = dates.size() - 1;
+                    CalendarDay day0 = dates.get(0);  // min
+                    CalendarDay dayLast = dates.get(last);
+                    adapter.clearSelections();
+                    if (dayLast.isAfter(day0)) {
+                        dispatchOnRangeSelected(day0, dayLast);
+                    } else if (dayLast.isBefore(day0)) {
+                        dispatchOnRangeSelected(dayLast, day0);
+                    } else {
+                        adapter.clearSelections();
+                        adapter.setDateSelected(date, nowSelected);  //  re-set because adapter has been cleared
+                        dispatchOnDateSelected(date, nowSelected);
+                    }
                 } else if (adapter.getSelectedDates().size() == 2) {
                     final List<CalendarDay> dates = adapter.getSelectedDates();
                     if (dates.get(0).isAfter(dates.get(1))) {
@@ -1561,6 +1575,16 @@ public class MaterialCalendarView extends ViewGroup {
                 dispatchOnDateSelected(date, true);
             }
             break;
+        }
+    }
+
+    public class DayComparator implements Comparator<CalendarDay> {
+        public int compare(CalendarDay day1, CalendarDay day2) {
+            if (day1.isAfter(day2)) {
+                return 1;
+            } else {
+                return -1;
+            }
         }
     }
 

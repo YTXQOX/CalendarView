@@ -13,6 +13,7 @@ import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -310,7 +311,19 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
 
     @NonNull
     public List<CalendarDay> getSelectedDates() {
+        Collections.sort(selectedDates, new DayComparator());   //通过重写Comparator的实现类DayComparator来实现日期先后排序。
+
         return Collections.unmodifiableList(selectedDates);
+    }
+
+    public class DayComparator implements Comparator<CalendarDay> {
+        public int compare(CalendarDay day1, CalendarDay day2) {
+            if (day1.isAfter(day2)) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
     }
 
     protected int getDateTextAppearance() {
