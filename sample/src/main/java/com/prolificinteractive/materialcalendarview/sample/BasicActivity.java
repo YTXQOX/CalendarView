@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
 /**
  * Shows off the most basic usage
  */
-public class BasicActivity extends AppCompatActivity implements OnDateSelectedListener, OnMonthChangedListener , OnRangeSelectedListener {
+public class BasicActivity extends AppCompatActivity implements OnDateSelectedListener, OnMonthChangedListener, OnRangeSelectedListener {
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
 
@@ -50,7 +50,7 @@ public class BasicActivity extends AppCompatActivity implements OnDateSelectedLi
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @Nullable CalendarDay date, boolean selected) {
-//        textView.setText(getSelectedDatesString());
+        textView.setText(getSelectedDatesString());
     }
 
     @Override
@@ -60,16 +60,23 @@ public class BasicActivity extends AppCompatActivity implements OnDateSelectedLi
 
     @Override
     public void onRangeSelected(@NonNull MaterialCalendarView widget, @NonNull List<CalendarDay> dates) {
-        String strStart = FORMATTER.format(dates.get(0).getDate());
-        String strEnd = FORMATTER.format(dates.get(dates.size() - 1).getDate());
+        if (dates.size() == 0) {
+            textView.setText("请选择日期");
+        } else if (dates.size() == 1) {
+            String strStartEnd = FORMATTER.format(dates.get(0).getDate());
+            textView.setText(strStartEnd + " - " + strStartEnd);
+        } else {
+            String strStart = FORMATTER.format(dates.get(0).getDate());
+            String strEnd = FORMATTER.format(dates.get(dates.size() - 1).getDate());
 
-        textView.setText(strStart + " - " + strEnd);
+            textView.setText(strStart + " - " + strEnd);
+        }
     }
 
     private String getSelectedDatesString() {
         CalendarDay date = widget.getSelectedDate();
         if (date == null) {
-            return "No Selection";
+            return "请选择日期";
         }
         return FORMATTER.format(date.getDate());
     }

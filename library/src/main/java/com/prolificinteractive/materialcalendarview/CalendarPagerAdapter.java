@@ -286,11 +286,19 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
 //                selectedDates.remove(day);
 //                invalidateSelectedDates();
 
+                if (selectedDates.size() == 1) {
+                    selectedDates.remove(day);
+                    invalidateSelectedDates();
+                    return;
+                }
+
                 int index = 0;
                 int size = selectedDates.size();
+                CalendarDay calendarDay0 = selectedDates.get(0);
+                CalendarDay calendarDayLast = selectedDates.get(size - 1);
                 Date dateSelected = day.getDate();
-                Date date0 = selectedDates.get(0).getDate();
-                Date dateLast = selectedDates.get(size - 1).getDate();
+                Date date0 = calendarDay0.getDate();
+                Date dateLast = calendarDayLast.getDate();
                 for (int i = 0; i < selectedDates.size(); i++) {
                     if (day.toString().equals(selectedDates.get(i).toString())) {
                         index = i;
@@ -299,10 +307,10 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
                 }
                 if (0 == betweenDays(date0, dateSelected)) {
                     selectedDates.clear();
-                    selectedDates.add(day);
+                    selectedDates.add(calendarDayLast);
                 } else if (0 == betweenDays(dateLast, dateSelected)) {
                     selectedDates.clear();
-                    selectedDates.add(day);
+                    selectedDates.add(calendarDay0);
                 } else if (betweenDays(date0, dateSelected) >= betweenDays(dateSelected, dateLast)) {
                     List<CalendarDay> selectedDatesTemp = new ArrayList<>();
                     for (int i = 0; i <= index; i++) {
@@ -370,7 +378,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         long day = (date1.getTime() - date2.getTime()) / (24 * 60 * 60 * 1000) > 0 ? (date1
                 .getTime() - date2.getTime()) / (24 * 60 * 60 * 1000)
                 : (date2.getTime() - date1.getTime()) / (24 * 60 * 60 * 1000);
-        return (int)day;
+        return (int) day;
     }
 
     protected int getDateTextAppearance() {

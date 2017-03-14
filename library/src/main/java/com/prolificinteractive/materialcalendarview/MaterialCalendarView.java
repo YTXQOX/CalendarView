@@ -1564,6 +1564,9 @@ public class MaterialCalendarView extends ViewGroup {
                     } else {
                         dispatchOnRangeSelected(dates.get(0), dates.get(1));
                     }
+                } else if (adapter.getSelectedDates().size() == 1) {
+                    final List<CalendarDay> dates = adapter.getSelectedDates();
+                    dispatchOnRangeSelected(dates.get(0), dates.get(0));
                 } else {
                     adapter.setDateSelected(date, nowSelected);
                     dispatchOnDateSelected(date, nowSelected);
