@@ -1536,6 +1536,8 @@ public class MaterialCalendarView extends ViewGroup {
 //                    adapter.setDateSelected(date, nowSelected);  //  re-set because adapter has been cleared
 //                    dispatchOnDateSelected(date, nowSelected);
 
+                    Log.i("date select-->", date.toString());
+
                     List<CalendarDay> dates = adapter.getSelectedDates();
 //                    Collections.sort(dates, new DayComparator());   //通过重写Comparator的实现类DayComparator来实现日期先后排序。
                     for (CalendarDay calendarDay : dates) {
@@ -1544,7 +1546,7 @@ public class MaterialCalendarView extends ViewGroup {
 
                     int last = dates.size() - 1;
                     CalendarDay day0 = dates.get(0);  // min
-                    CalendarDay dayLast = dates.get(last);
+                    CalendarDay dayLast = dates.get(last); // max
                     adapter.clearSelections();
                     if (dayLast.isAfter(day0)) {
                         dispatchOnRangeSelected(day0, dayLast);
@@ -1576,6 +1578,13 @@ public class MaterialCalendarView extends ViewGroup {
             }
             break;
         }
+    }
+
+    public int betweenDays(Date date1, Date date2) {
+        long day = (date1.getTime() - date2.getTime()) / (24 * 60 * 60 * 1000) > 0 ? (date1
+                .getTime() - date2.getTime()) / (24 * 60 * 60 * 1000)
+                : (date2.getTime() - date1.getTime()) / (24 * 60 * 60 * 1000);
+        return Integer.parseInt(String.valueOf(day));
     }
 
     public class DayComparator implements Comparator<CalendarDay> {

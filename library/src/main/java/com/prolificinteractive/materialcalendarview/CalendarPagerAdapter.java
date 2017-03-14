@@ -14,6 +14,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -273,6 +274,8 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     }
 
     public void setDateSelected(CalendarDay day, boolean selected) {
+        Collections.sort(selectedDates, new DayComparator());   //通过重写Comparator的实现类DayComparator来实现日期先后排序。
+
         if (selected) {
             if (!selectedDates.contains(day)) {
                 selectedDates.add(day);
@@ -280,7 +283,43 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
             }
         } else {
             if (selectedDates.contains(day)) {
-                selectedDates.remove(day);
+//                selectedDates.remove(day);
+//                invalidateSelectedDates();
+
+                int index = 0;
+                int size = selectedDates.size();
+                Date dateSelected = day.getDate();
+                Date date0 = selectedDates.get(0).getDate();
+                Date dateLast = selectedDates.get(size - 1).getDate();
+                for (int i = 0; i < selectedDates.size(); i++) {
+                    if (day.toString().equals(selectedDates.get(i).toString())) {
+                        index = i;
+                        break;
+                    }
+                }
+                if (0 == betweenDays(date0, dateSelected)) {
+                    selectedDates.clear();
+                    selectedDates.add(day);
+                } else if (0 == betweenDays(dateLast, dateSelected)) {
+                    selectedDates.clear();
+                    selectedDates.add(day);
+                } else if (betweenDays(date0, dateSelected) >= betweenDays(dateSelected, dateLast)) {
+                    List<CalendarDay> selectedDatesTemp = new ArrayList<>();
+                    for (int i = 0; i <= index; i++) {
+                        selectedDatesTemp.add(selectedDates.get(i));
+                    }
+                    selectedDates.clear();
+                    selectedDates.addAll(selectedDatesTemp);
+                    selectedDatesTemp.clear();
+                } else if (betweenDays(date0, dateSelected) < betweenDays(dateSelected, dateLast)) {
+                    List<CalendarDay> selectedDatesTemp = new ArrayList<>();
+                    for (int i = index; i < size; i++) {
+                        selectedDatesTemp.add(selectedDates.get(i));
+                    }
+                    selectedDates.clear();
+                    selectedDates.addAll(selectedDatesTemp);
+                    selectedDatesTemp.clear();
+                }
                 invalidateSelectedDates();
             }
         }
@@ -313,7 +352,8 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     public List<CalendarDay> getSelectedDates() {
         Collections.sort(selectedDates, new DayComparator());   //通过重写Comparator的实现类DayComparator来实现日期先后排序。
 
-        return Collections.unmodifiableList(selectedDates);
+        return selectedDates;
+//        return Collections.unmodifiableList(selectedDates);
     }
 
     public class DayComparator implements Comparator<CalendarDay> {
@@ -324,6 +364,13 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
                 return -1;
             }
         }
+    }
+
+    public int betweenDays(Date date1, Date date2) {
+        long day = (date1.getTime() - date2.getTime()) / (24 * 60 * 60 * 1000) > 0 ? (date1
+                .getTime() - date2.getTime()) / (24 * 60 * 60 * 1000)
+                : (date2.getTime() - date1.getTime()) / (24 * 60 * 60 * 1000);
+        return (int)day;
     }
 
     protected int getDateTextAppearance() {
