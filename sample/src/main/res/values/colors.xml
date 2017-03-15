@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="sample_primary">#3fabfa</color>
-    <color name="sample_accent">#0093FF</color>
+    <color name="sample_light">#97b3d9</color>
+    <color name="sample_primary">#3b87ee</color>
+    <color name="sample_accent">#1f77ed</color>
 </resources>

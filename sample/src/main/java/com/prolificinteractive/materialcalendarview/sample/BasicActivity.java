@@ -48,7 +48,7 @@ public class BasicActivity extends AppCompatActivity implements OnDateSelectedLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic);
-        setStatusBar(ContextCompat.getColor(this, R.color.sample_accent));
+        setStatusBar(ContextCompat.getColor(this, R.color.sample_primary));
 
         ButterKnife.bind(this);
 

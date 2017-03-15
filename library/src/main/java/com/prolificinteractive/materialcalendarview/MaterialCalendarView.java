@@ -363,8 +363,8 @@ public class MaterialCalendarView extends ViewGroup {
             buttonYearPast.setImageDrawable(getResources().getDrawable(R.mipmap.ic_action_previous_year));
             buttonYearFuture.setImageDrawable(getResources().getDrawable(R.mipmap.ic_action_next_year));
 
-            setSelectionColor(a.getColor(R.styleable.MaterialCalendarView_mcv_selectionColor, getThemeAccentColor(context)));
-//            setSelectionColor(R.color.red_primary);
+//            setSelectionColor(a.getColor(R.styleable.MaterialCalendarView_mcv_selectionColor, getThemeAccentColor(context)));
+            setSelectionColor(a.getColor(R.styleable.MaterialCalendarView_mcv_selectionColor, getResources().getColor(R.color.blue_primary)));
 
             CharSequence[] array = a.getTextArray(R.styleable.MaterialCalendarView_mcv_weekDayLabels);
             if (array != null) {
@@ -696,7 +696,6 @@ public class MaterialCalendarView extends ViewGroup {
         }
 
         accentColor = color;
-//        accentColor = R.color.red_primary;
         adapter.setSelectionColor(color);
         invalidate();
     }
