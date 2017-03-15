@@ -101,7 +101,7 @@ class DayView extends CheckedTextView {
 
     public void setSelectionColor(int color) {
         this.selectionColor = color;
-        regenerateBackground();
+        regenerateCircleBackground();
 //        regenerateRectangleBackground();
     }
 
@@ -114,7 +114,7 @@ class DayView extends CheckedTextView {
         } else {
             this.selectionDrawable = drawable.getConstantState().newDrawable(getResources());
         }
-        regenerateBackground();
+        regenerateCircleBackground();
 //        regenerateRectangleBackground();
     }
 
@@ -188,12 +188,12 @@ class DayView extends CheckedTextView {
     }
 
     /** 圆形背景*/
-    private static Drawable generateBackground(int color, int fadeTime, Rect bounds) {
+    private static Drawable generateCircleBackground(int color, int fadeTime, Rect bounds) {
         StateListDrawable drawable = new StateListDrawable();
         drawable.setExitFadeDuration(fadeTime);
         drawable.addState(new int[]{android.R.attr.state_checked}, generateCircleDrawable(color));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            drawable.addState(new int[]{android.R.attr.state_pressed}, generateRippleDrawable(color, bounds));
+            drawable.addState(new int[]{android.R.attr.state_pressed}, generateCircleRippleDrawable(color, bounds));
         } else {
             drawable.addState(new int[]{android.R.attr.state_pressed}, generateCircleDrawable(color));
         }
@@ -220,11 +220,11 @@ class DayView extends CheckedTextView {
     }
 
     /** 圆形背景*/
-    private void regenerateBackground() {
+    private void regenerateCircleBackground() {
         if (selectionDrawable != null) {
             setBackgroundDrawable(selectionDrawable);
         } else {
-            mCircleDrawable = generateBackground(selectionColor, fadeTime, circleDrawableRect);
+            mCircleDrawable = generateCircleBackground(selectionColor, fadeTime, circleDrawableRect);
             setBackgroundDrawable(mCircleDrawable);
         }
     }
@@ -257,7 +257,7 @@ class DayView extends CheckedTextView {
 
     /** 圆形 Ripple*/
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private static Drawable generateRippleDrawable(final int color, Rect bounds) {
+    private static Drawable generateCircleRippleDrawable(final int color, Rect bounds) {
         ColorStateList list = ColorStateList.valueOf(color);
         Drawable mask = generateCircleDrawable(Color.WHITE);
         RippleDrawable rippleDrawable = new RippleDrawable(list, null, mask);
@@ -325,7 +325,8 @@ class DayView extends CheckedTextView {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         calculateBounds(right - left, bottom - top);
-        regenerateBackground();
+        regenerateCircleBackground();
+//        regenerateRectangleBackground();
     }
 
     private void calculateBounds(int width, int height) {
