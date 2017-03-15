@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion 25
@@ -6,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.prolificinteractive.materialcalendarview.sample"
-        minSdkVersion 14
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode project.ext.versionCodeInt
         versionName version
@@ -23,7 +24,12 @@ dependencies {
     compile project(':library')
     //compile 'com.prolificinteractive:material-calendarview:1.4.0'
 
-    compile 'com.android.support:appcompat-v7:25.1.1'
-    compile 'com.android.support:recyclerview-v7:25.1.1'
-    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.android.support:appcompat-v7:25.3.0'
+    compile 'com.android.support:recyclerview-v7:25.3.0'
+
+    compile 'com.readystatesoftware.systembartint:systembartint:1.0.4'
+
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
 }

@@ -3,4 +3,8 @@
     <color name="blue_light">#97b3d9</color>
     <color name="blue_primary">#0093FF</color>
     <color name="blue_accent">#006BBA</color>
+
+    <color name="red_light">#ec5a5a</color>
+    <color name="red_primary">#fa1111</color>
+    <color name="red_accent">#ac0505</color>
 </resources>

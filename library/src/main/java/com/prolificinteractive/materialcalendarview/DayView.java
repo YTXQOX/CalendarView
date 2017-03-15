@@ -43,6 +43,7 @@ class DayView extends CheckedTextView {
     private Drawable customBackground = null;
     private Drawable selectionDrawable;
     private Drawable mCircleDrawable;
+    private Drawable mRectangleDrawable;
     private DayFormatter formatter = DayFormatter.DEFAULT;
 
     private boolean isInRange = true;
@@ -101,7 +102,7 @@ class DayView extends CheckedTextView {
     public void setSelectionColor(int color) {
         this.selectionColor = color;
         regenerateBackground();
-//        regenerateRectBackground();
+//        regenerateRectangleBackground();
     }
 
     /**
@@ -114,7 +115,7 @@ class DayView extends CheckedTextView {
             this.selectionDrawable = drawable.getConstantState().newDrawable(getResources());
         }
         regenerateBackground();
-//        regenerateRectBackground();
+//        regenerateRectangleBackground();
     }
 
     /**
@@ -171,6 +172,8 @@ class DayView extends CheckedTextView {
 
     private final Rect tempRect = new Rect();
     private final Rect circleDrawableRect = new Rect();
+    private final Rect rectangleDrawableRect = new Rect();
+
 
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
@@ -194,24 +197,26 @@ class DayView extends CheckedTextView {
         }
     }
 
-    private void regenerateRectBackground() {
+    private void regenerateRectangleBackground() {
         if (selectionDrawable != null) {
             setBackgroundDrawable(selectionDrawable);
         } else {
-            mCircleDrawable = generateRectBackground(selectionColor, fadeTime, circleDrawableRect);
-            setBackgroundDrawable(mCircleDrawable);
+            mRectangleDrawable = generateRectangleBackground(selectionColor, fadeTime, rectangleDrawableRect);
+            setBackgroundDrawable(mRectangleDrawable);
         }
     }
 
     private static Drawable generateCircleDrawable(final int color) {
         ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
         drawable.getPaint().setColor(color);
+
         return drawable;
     }
 
-    private static Drawable generateRectDrawable(final int color) {
+    private static Drawable generateRectangleDrawable(final int color) {
         ShapeDrawable drawable = new ShapeDrawable(new RectShape());
-        drawable.getPaint().setColor(color);
+        drawable.getPaint().setColor(Color.parseColor("#e8f1fe"));
+
         return drawable;
     }
 
@@ -230,17 +235,17 @@ class DayView extends CheckedTextView {
         return drawable;
     }
 
-    private static Drawable generateRectBackground(int color, int fadeTime, Rect bounds) {
+    private static Drawable generateRectangleBackground(int color, int fadeTime, Rect bounds) {
         StateListDrawable drawable = new StateListDrawable();
         drawable.setExitFadeDuration(fadeTime);
-        drawable.addState(new int[]{android.R.attr.state_checked}, generateRectDrawable(color));
+        drawable.addState(new int[]{android.R.attr.state_checked}, generateRectangleDrawable(color));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            drawable.addState(new int[]{android.R.attr.state_pressed}, generateRectRippleDrawable(color, bounds));
+            drawable.addState(new int[]{android.R.attr.state_pressed}, generateRectangleRippleDrawable(color, bounds));
         } else {
-            drawable.addState(new int[]{android.R.attr.state_pressed}, generateRectDrawable(color));
+            drawable.addState(new int[]{android.R.attr.state_pressed}, generateRectangleDrawable(color));
         }
 
-        drawable.addState(new int[]{}, generateRectDrawable(Color.TRANSPARENT));
+        drawable.addState(new int[]{}, generateRectangleDrawable(Color.TRANSPARENT));
 
         return drawable;
     }
@@ -265,9 +270,9 @@ class DayView extends CheckedTextView {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private static Drawable generateRectRippleDrawable(final int color, Rect bounds) {
+    private static Drawable generateRectangleRippleDrawable(final int color, Rect bounds) {
         ColorStateList list = ColorStateList.valueOf(color);
-        Drawable mask = generateRectDrawable(Color.WHITE);
+        Drawable mask = generateRectangleDrawable(Color.WHITE);
         RippleDrawable rippleDrawable = new RippleDrawable(list, null, mask);
 //        API 21
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {

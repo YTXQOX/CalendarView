@@ -4,37 +4,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context=".BasicActivity">
 
-<LinearLayout
+    <include
+        android:id="@+id/id_main_toolbar"
+        layout="@layout/layout_global_toolbar" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#0093FF"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin">
+
         <TextView
             android:id="@+id/id_tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="选择日期"
             android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:text="选择日期" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textSize="20sp"
+            android:text="2017年03月01日 - 2017年03月31日"
             android:textColor="#FFFFFF"
-            android:text="2017年03月01日 - 2017年03月31日"/>
+            android:textSize="20sp" />
     </LinearLayout>
 
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendarView"
-        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin" />
 

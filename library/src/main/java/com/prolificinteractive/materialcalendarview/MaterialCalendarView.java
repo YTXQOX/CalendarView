@@ -338,27 +338,33 @@ public class MaterialCalendarView extends ViewGroup {
                 setTileHeight(tileHeight);
             }
 
-            setArrowColor(a.getColor(R.styleable.MaterialCalendarView_mcv_arrowColor, Color.BLUE));
-            setYearArrowColor(a.getColor(R.styleable.MaterialCalendarView_mcv_arrowColor, Color.GRAY));
+//            Drawable leftMask = a.getDrawable(R.styleable.MaterialCalendarView_mcv_leftArrowMask);
+//            if (leftMask == null) {
+//                leftMask = getResources().getDrawable(R.mipmap.ic_action_previous_month);
+//            }
+//            setArrowColor(a.getColor(R.styleable.MaterialCalendarView_mcv_arrowColor, Color.BLUE));
+//            setLeftArrowMask(leftMask);
+//
+//            setYearArrowColor(a.getColor(R.styleable.MaterialCalendarView_mcv_arrowColor, Color.GRAY));
+//            setLeftArrowMaskYear(leftMask);
+//
+//            Drawable rightMask = a.getDrawable(R.styleable.MaterialCalendarView_mcv_rightArrowMask);
+//            if (rightMask == null) {
+//                rightMask = getResources().getDrawable(R.mipmap.ic_action_next_month);
+//            }
+//            setArrowColor(a.getColor(R.styleable.MaterialCalendarView_mcv_arrowColor, Color.BLUE));
+//            setRightArrowMask(rightMask);
+//
+//            setYearArrowColor(a.getColor(R.styleable.MaterialCalendarView_mcv_arrowColor, Color.GRAY));
+//            setRightArrowMaskYear(rightMask);
 
-            Drawable leftMask = a.getDrawable(R.styleable.MaterialCalendarView_mcv_leftArrowMask
-            );
-            if (leftMask == null) {
-                leftMask = getResources().getDrawable(R.mipmap.ic_action_previous);
-            }
-            setLeftArrowMask(leftMask);
-            setLeftArrowMaskYear(leftMask);
-
-            Drawable rightMask = a.getDrawable(R.styleable.MaterialCalendarView_mcv_rightArrowMask
-            );
-            if (rightMask == null) {
-                rightMask = getResources().getDrawable(R.mipmap.ic_action_next);
-            }
-            setRightArrowMask(rightMask);
-            setRightArrowMaskYear(rightMask);
+            buttonPast.setImageDrawable(getResources().getDrawable(R.mipmap.ic_action_previous_month));
+            buttonFuture.setImageDrawable(getResources().getDrawable(R.mipmap.ic_action_next_month));
+            buttonYearPast.setImageDrawable(getResources().getDrawable(R.mipmap.ic_action_previous_year));
+            buttonYearFuture.setImageDrawable(getResources().getDrawable(R.mipmap.ic_action_next_year));
 
             setSelectionColor(a.getColor(R.styleable.MaterialCalendarView_mcv_selectionColor, getThemeAccentColor(context)));
-//            setSelectionColor(R.color.blue_primary);
+//            setSelectionColor(R.color.red_primary);
 
             CharSequence[] array = a.getTextArray(R.styleable.MaterialCalendarView_mcv_weekDayLabels);
             if (array != null) {
@@ -690,7 +696,7 @@ public class MaterialCalendarView extends ViewGroup {
         }
 
         accentColor = color;
-//        accentColor = R.color.blue_primary;
+//        accentColor = R.color.red_primary;
         adapter.setSelectionColor(color);
         invalidate();
     }
@@ -1324,11 +1330,12 @@ public class MaterialCalendarView extends ViewGroup {
 //            //Get colorAccent defined for AppCompat
             colorAttr = context.getResources().getIdentifier("colorAccent", "attr", context.getPackageName());
         }
-//        colorAttr = R.color.blue_primary;
 
-        TypedValue outValue = new TypedValue();
-        context.getTheme().resolveAttribute(colorAttr, outValue, true);
-        return outValue.data;
+//        colorAttr = R.color.red_primary;
+
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(colorAttr, typedValue, true);
+        return typedValue.data;
     }
 
     /**
