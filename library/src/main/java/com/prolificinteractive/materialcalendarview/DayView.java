@@ -11,7 +11,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.graphics.drawable.shapes.RectShape;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -241,7 +240,8 @@ class DayView extends CheckedTextView {
 
     /** 圆形*/
     private static Drawable generateCircleDrawable(final int color) {
-        ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
+//        ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
+        ShapeDrawable drawable = new ShapeDrawable(new RectShape());
         drawable.getPaint().setColor(color);
 
         return drawable;
@@ -250,7 +250,7 @@ class DayView extends CheckedTextView {
     /** 方形*/
     private static Drawable generateRectangleDrawable(final int color) {
         ShapeDrawable drawable = new ShapeDrawable(new RectShape());
-        drawable.getPaint().setColor(Color.parseColor("#e8f1fe"));
+        drawable.getPaint().setColor(color);
 
         return drawable;
     }
